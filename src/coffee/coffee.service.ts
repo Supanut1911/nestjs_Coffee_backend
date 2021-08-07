@@ -1,20 +1,10 @@
-import { HttpException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { stringify } from 'querystring';
 import { Repository } from 'typeorm';
 import { Coffee } from './coffee.entity';
 import { CoffeeDto } from './DTO/coffee.dto';
 
-let coffees = [
-    {
-        name: 'mocha',
-        cost: 55
-    },
-    {
-        name: 'expresso',
-        cost: 75
-    }
-]
+
 @Injectable()
 export class CoffeeService {
 
