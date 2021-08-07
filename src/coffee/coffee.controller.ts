@@ -1,71 +1,48 @@
-import { Body, ConflictException, Controller, Get, Inject, LoggerService, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
-import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
-import { CoffeeDto } from './coffee.dto';
-import { Logger } from 'winston';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from  'multer';
-import { extname } from  'path';
-
-let coffees = [
-    {
-        name: 'mocha',
-        cost: 55
-    },
-    {
-        name: 'expresso',
-        cost: 75
-    }
-]
+import { Body, ConflictException, Controller, Delete, Get, Header, HttpStatus, Inject,  LoggerService, Param, Patch, Post, Res, SetMetadata, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { CoffeeDto } from './DTO/coffee.dto';
+import { CoffeeService } from './coffee.service';
+import { Coffee } from './coffee.entity';
 
 @Controller('coffee')
 export class CoffeeController {
 
     constructor(
-        @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger
+        private coffeeService: CoffeeService
     ) {}
 
     @Get()
-    getCoffees(
-    ) {
-        this.logger.log('info', 'getCoffee', coffees)
-        return coffees
+    async getCoffees(
+
+    ): Promise<Coffee[]> {
+        let coffeesRes = await this.coffeeService.getCoffees()
+        return coffeesRes
     }
 
     @Post()
-    createCoffee(
-        @Body() coffeeDto: CoffeeDto
-    ):Object {
-        let { name, cost } = coffeeDto
-        let coffee = {
-            name,
-            cost
-        }
-
-        try {
-            coffees.push(coffee)
-            this.logger.log('debug', 'createCoffee', coffees)
-            return {
-                msg: 'add coffee success'
-            }
-        } catch (error) {
-            throw new ConflictException('add fail')
-        }
+    async addCoffee(
+        @Body() payload: CoffeeDto
+    ) {
+        let response = await this.coffeeService.addCoffee(payload)
+        return response
     }
 
-    @Post('/upload')
-    @UseInterceptors(FileInterceptor('file', {
-        storage: diskStorage({
-          destination: './avatars', 
-          filename: (req, file, cb) => {
-          const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('')
-          return cb(null, `${randomName}${extname(file.originalname)}`)
-        }
-        })
-      }))
-    uploadimg(
-        @UploadedFile() file,
-        @Res() res
+    @Patch('/:name')
+    async editCoffee(
+        @Param('name') name: string,
+        @Body() payload: CoffeeDto
     ) {
-        console.log(file);        
+        let response = await this.coffeeService.editCoffee(name, payload)
+        return response
+    }
+
+    @Delete('/:name')
+    async deleteCoffee(
+       @Param('name') name: string
+    ) {
+        let response = await this.coffeeService.deleteCoffee(name)
+        return response
     }
 }
+
+
+
