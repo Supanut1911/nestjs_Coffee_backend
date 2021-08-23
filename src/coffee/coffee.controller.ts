@@ -22,6 +22,8 @@ export class CoffeeController {
     async addCoffee(
         @Body() payload: CoffeeDto
     ) {
+        console.log('create coffee');
+        
         let response = await this.coffeeService.addCoffee(payload)
         return response
     }
