@@ -1,7 +1,7 @@
 import { Body, ConflictException, Controller, Delete, Get, Header, HttpStatus, Inject,  LoggerService, Param, Patch, Post, Res, SetMetadata, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { CoffeeDto } from './DTO/coffee.dto';
 import { CoffeeService } from './coffee.service';
-import { Coffee } from './coffee.entity';
+import { Coffee } from './coffee';
 
 @Controller('coffee')
 export class CoffeeController {

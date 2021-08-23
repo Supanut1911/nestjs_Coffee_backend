@@ -1,5 +1,5 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { Coffee } from "src/coffee/coffee.entity";
+import { Coffee } from "src/coffee/coffee";
 
 export const CoffeeTypeOrmConfig: TypeOrmModuleOptions = {
     // type: 'postgres',

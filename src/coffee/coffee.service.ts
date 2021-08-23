@@ -1,7 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Coffee } from './coffee.entity';
+import { Coffee } from './coffee';
 import { CoffeeDto } from './DTO/coffee.dto';
 
 
